@@ -1,0 +1,5 @@
+$kind: collection
+name: Flask Blog API
+description: |-
+  A Postman collection for the Flask Blog API.
+  Contains health checks and blog resource endpoints (posts, users, comments).
