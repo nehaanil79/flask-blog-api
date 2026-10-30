@@ -35,4 +35,16 @@ def create_app():
     def handle_http_error(error):
         return {"error": error.description}, error.code
 
+    @jwt.unauthorized_loader
+    def missing_token(reason):
+        return {"error": "Login required. Send a valid token in the Authorization header."}, 401
+
+    @jwt.invalid_token_loader
+    def invalid_token(reason):
+        return {"error": "Invalid token. Please log in again."}, 401
+
+    @jwt.expired_token_loader
+    def expired_token(jwt_header, jwt_payload):
+        return {"error": "Your session has expired. Please log in again."}, 401
+
     return app

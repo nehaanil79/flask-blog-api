@@ -3,6 +3,8 @@ from flask import Blueprint, abort, request
 from app.extensions import db
 from app.models import Category
 
+from flask_jwt_extended import jwt_required
+
 categories_bp = Blueprint("categories", __name__, url_prefix="/categories")
 
 
@@ -20,6 +22,7 @@ def list_categories():
 
 
 @categories_bp.post("")
+@jwt_required()
 def create_category():
     data = request.get_json(silent=True) or {}
     name = str(data.get("name", "")).strip()
