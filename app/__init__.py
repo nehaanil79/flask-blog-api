@@ -12,12 +12,15 @@ from app.routes.auth import auth_bp
 
 from werkzeug.exceptions import HTTPException
 
+from flask_cors import CORS
+
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     db.init_app(app)
     jwt.init_app(app)
+    CORS(app)
 
     app.register_blueprint(authors_bp)
     app.register_blueprint(posts_bp)
