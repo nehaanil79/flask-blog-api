@@ -15,9 +15,9 @@ from werkzeug.exceptions import HTTPException
 from flask_cors import CORS
 
 
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__)
-    app.config.from_object(Config)
+    app.config.from_object(config_class)
     db.init_app(app)
     jwt.init_app(app)
     CORS(app)
