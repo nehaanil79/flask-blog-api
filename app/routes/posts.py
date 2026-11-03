@@ -5,6 +5,8 @@ from app.models import Author, Category, Post
 
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
+from app.ai import suggest_tags, AIServiceError
+
 posts_bp = Blueprint("posts", __name__, url_prefix="/posts")
 
 
@@ -86,6 +88,25 @@ def update_post(post_id):
 
     db.session.commit()
     return post.to_dict()
+
+@posts_bp.post("/suggest-tags")
+@jwt_required()
+def suggest_post_tags():
+    data = request.get_json(silent=True) or {}
+    title = data.get("title")
+    content = data.get("content")
+
+    if not isinstance(title, str) or not title.strip():
+        abort(400, description="Title is required.")
+    if not isinstance(content, str) or not content.strip():
+        abort(400, description="Content is required.")
+
+    try:
+        tags = suggest_tags(title.strip(), content.strip())
+    except AIServiceError as error:
+        abort(503, description=str(error))
+
+    return {"tags": tags}, 200
 
 
 @posts_bp.delete("/<int:post_id>")

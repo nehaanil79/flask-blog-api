@@ -19,3 +19,4 @@ class Config:
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
     JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "dev-only-change-me")
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
